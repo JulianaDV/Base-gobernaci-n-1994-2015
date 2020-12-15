@@ -52,9 +52,21 @@ Gobernadores_2011 <- Gobernadores_2011[,c(1,8,3,2,4,5:7)]
 
 # Pegando información 2011
 Panel_gobernadores9407 <- rbind(Panel_gobernadores9407, Gobernadores_2011)
+rm(Gobernadores_2011)
 
-# FALTA 2015, REVISAR VARIABLES PARA HACER EL rbind() NO SÉ SI TENGAS UN MÉTODO MEJOR
-# BTW ASÍ LO SÉ HACER YO GG
+# Arreglando base 2015
+Gobernadores_2015$departamento <- NA
+attach(Gobernadores_2015)
+Gobernadores_2015$candidato <- paste0(nombre," ", primer_apellido, " ",segundo_apellido)
+Gobernadores_2015$candidato <- ifelse(primer_apellido == "VOTOS EN BLANCO" |
+                                             primer_apellido == "VOTOS NULOS", primer_apellido,
+                                           candidato)
+Gobernadores_2015 <- Gobernadores_2015[,c(1,3,19,4,5,20,14,6)]
+Gobernadores_2015 <- rename(Gobernadores_2015, codpartido = codpartido_1)
 
+# Pegando información 2015
+Panel_gobernadores9411 <- rbind(Panel_gobernadores9407, Gobernadores_2015)
+rm(Panel_gobernadores9407, Gobernadores_2015)
 
-#                I   L O V E   Y O U   S I M O N C I T O                     #
+# Guardando la base de datos
+write_csv(Panel_gobernadores9411, "Histórico votaciones 1994-2015.csv")
